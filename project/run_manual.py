@@ -4,7 +4,6 @@ Be sure you have minitorch installed in you Virtual Env.
 """
 
 import random
-
 import minitorch
 
 
