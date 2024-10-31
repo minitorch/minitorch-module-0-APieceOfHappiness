@@ -29,6 +29,7 @@ from .strategies import assert_close, small_floats
 
 # ## Task 0.1 Basic hypothesis tests.
 
+
 @pytest.mark.task0_1
 @given(small_floats, small_floats)
 def test_same_as_python(x: float, y: float) -> None:
@@ -108,9 +109,9 @@ def test_sigmoid(a: float) -> None:
     """
     assert 0 <= sigmoid(a) <= 1
     for i in range(-5, 5):
-        assert sigmoid(a + i) < sigmoid(a + i + 1) 
-    assert_close(1 - sigmoid(a),  sigmoid(-a))
-    assert_close(sigmoid(0), 0.5)    
+        assert sigmoid(a + i) < sigmoid(a + i + 1)
+    assert_close(1 - sigmoid(a), sigmoid(-a))
+    assert_close(sigmoid(0), 0.5)
 
 
 @pytest.mark.task0_2
@@ -193,9 +194,7 @@ def test_negList(ls: List[float]) -> None:
 
 
 # ## Generic mathematical tests
-
 # For each unit this generic set of mathematical tests will run.
-
 
 one_arg, two_arg, _ = MathTest._tests()
 

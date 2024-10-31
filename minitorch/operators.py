@@ -3,7 +3,7 @@
 import math
 
 # ## Task 0.1
-from typing import Callable, Iterable
+# from typing import Callable, Iterable
 
 #
 # Implementation of a prelude of elementary functions.
@@ -30,6 +30,7 @@ from typing import Callable, Iterable
 # $f(x) =  \frac{1.0}{(1.0 + e^{-x})}$ if x >=0 else $\frac{e^x}{(1.0 + e^{x})}$
 # For is_close:
 # $f(x) = |x - y| < 1e-2$
+
 
 def mul(x: float, y: float) -> float:
     return x * y
@@ -70,7 +71,9 @@ def sigmoid(x: float) -> float:
 def relu(x: float) -> float:
     return (x > 0) * x
 
+
 EPS = 1e-6
+
 
 def log(x: float) -> float:
     return math.log(x + EPS)
@@ -86,7 +89,6 @@ def log_back(x: float, d: float) -> float:
 
 def inv(x: float) -> float:
     return 1 / (x + EPS)
-    
 
 
 def inv_back(x: float, d: float) -> float:
@@ -95,7 +97,6 @@ def inv_back(x: float, d: float) -> float:
 
 def relu_back(x: float, d: float) -> float:
     return (x > 0) * d
-
 
 
 # ## Task 0.3
