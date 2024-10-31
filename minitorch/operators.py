@@ -3,7 +3,7 @@
 import math
 
 # ## Task 0.1
-# from typing import Callable, Iterable
+from typing import Callable, Iterable
 
 #
 # Implementation of a prelude of elementary functions.
@@ -65,7 +65,7 @@ def is_close(x: float, y: float) -> float:
 
 
 def sigmoid(x: float) -> float:
-    return 1 / (1 + math.exp(-x)) if x >= 0 else math.exp(x) / (1 + math.exp(x))
+    return 1.0 / (1.0 + math.exp(-x)) if x >= 0 else math.exp(x) / (1.0 + math.exp(x))
 
 
 def relu(x: float) -> float:
@@ -84,11 +84,11 @@ def exp(x: float) -> float:
 
 
 def log_back(x: float, d: float) -> float:
-    return d / (x + EPS)
+    return d / x
 
 
 def inv(x: float) -> float:
-    return 1 / (x + EPS)
+    return 1 / x
 
 
 def inv_back(x: float, d: float) -> float:
@@ -115,4 +115,71 @@ def relu_back(x: float, d: float) -> float:
 # - prod: take the product of lists
 
 
-# TODO: Implement for Task 0.3.
+def map(fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[float]]:
+    def hidden(ls: Iterable[float]) -> Iterable[float]:
+        res = []
+        for val in ls:
+            res.append(fn(val))
+        return res
+    return hidden
+
+
+def negList(ls: Iterable[float]) -> Iterable[float]:
+    return map(neg)(ls)
+
+
+def zipWith(
+    fn: Callable[[float, float], float]
+) -> Callable[[Iterable[float], Iterable[float]], Iterable[float]]:
+    """
+    Higher-order zipwith (or map2).
+
+    See https://en.wikipedia.org/wiki/Map_(higher-order_function)
+
+    Args:
+        fn: combine two values
+
+    Returns:
+        Function that takes two equally sized lists `ls1` and `ls2`, produce a new list by
+         applying fn(x, y) on each pair of elements.
+
+    """
+    def hidden(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+        return [fn(val1, val2) for val1, val2 in zip(ls1, ls2)]
+    return hidden
+
+
+def addLists(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+    "Add the elements of `ls1` and `ls2` using `zipWith` and `add`"
+    return zipWith(add)(ls1, ls2)
+
+
+def reduce(
+    fn: Callable[[float, float], float], start: float
+) -> Callable[[Iterable[float]], float]:
+    r"""
+    Higher-order reduce.
+
+    Args:
+        fn: combine two values
+        start: start value $x_0$
+
+    Returns:
+        Function that takes a list `ls` of elements
+         $x_1 \ldots x_n$ and computes the reduction :math:`fn(x_3, fn(x_2,
+         fn(x_1, x_0)))`
+    """
+    def hidden(ls: Iterable[float]) -> float:
+        result = start
+        for item in ls:
+            result = fn(item, result)
+        return result
+    return hidden
+
+
+def sum(ls: Iterable[float]) -> float:
+    return reduce(add, 0)(ls)
+
+
+def prod(ls: Iterable[float]) -> float:
+    return reduce(mul, 1)(ls)

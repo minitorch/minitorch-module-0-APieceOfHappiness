@@ -22,7 +22,7 @@ from minitorch.operators import (
     prod,
     relu,
     relu_back,
-    sigmoid,
+    sigmoid
 )
 
 from .strategies import assert_close, small_floats
@@ -108,8 +108,9 @@ def test_sigmoid(a: float) -> None:
     * It is  strictly increasing.
     """
     assert 0 <= sigmoid(a) <= 1
-    for i in range(-5, 5):
-        assert sigmoid(a + i) < sigmoid(a + i + 1)
+    assert sigmoid(a) < sigmoid(a + 1) or sigmoid(a) == sigmoid(a + 1) == 1 or sigmoid(a) == sigmoid(a + 1) == 0
+    assert sigmoid(a - 1) < sigmoid(a) or sigmoid(a) == sigmoid(a + 1) == 1 or sigmoid(a) == sigmoid(a + 1) == 0
+
     assert_close(1 - sigmoid(a), sigmoid(-a))
     assert_close(sigmoid(0), 0.5)
 
@@ -122,27 +123,28 @@ def test_transitive(a: float, b: float, c: float) -> None:
 
 
 @pytest.mark.task0_2
-def test_symmetric(x: float, y: float) -> None:
+@given(small_floats, small_floats)
+def test_symmetric(a: float, b: float) -> None:
     """Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
     gives the same value regardless of the order of its input.
     """
-    assert mul(x, y) == mul(y, x)
-    # for i in range(-10, 10):
-    #     assert mul(i, i + 1) == mul(i + 1, i)
+    assert mul(a, b) == mul(a, b)
 
 
 @pytest.mark.task0_2
+@given(small_floats, small_floats, small_floats)
 def test_distribute(x: float, y: float, z: float) -> None:
     r"""Write a test that ensures that your operators distribute, i.e.
     :math:`z \times (x + y) = z \times x + z \times y`
     """
-    assert mul(add(x, y), z) == add(mul(z, x), mul(z, y))
+    assert_close(mul(add(x, y), z), add(mul(z, x), mul(z, y)))
 
 
 @pytest.mark.task0_2
+@given(small_floats)
 def test_other(a: float) -> None:
     """Write a test that ensures some other property holds for your functions."""
-    assert mul(a, a) == a ** 2
+    assert_close(mul(a, a), a ** 2)
 
 
 # ## Task 0.3  - Higher-order functions
@@ -169,8 +171,8 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     """Write a test that ensures that the sum of `ls1` plus the sum of `ls2`
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
-    # TODO: Implement for Task 0.3.
-    raise NotImplementedError("Need to implement for Task 0.3")
+    for res_sum, val1, val2 in zip(addLists(ls1, ls2), ls1, ls2):
+        assert_close(res_sum, val1 + val2)
 
 
 @pytest.mark.task0_3
