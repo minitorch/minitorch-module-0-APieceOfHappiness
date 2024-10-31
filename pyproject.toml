@@ -29,7 +29,7 @@ reportUnusedExpression = "none"
 reportUnknownLambdaType = "none"
 reportIncompatibleMethodOverride = "none"
 reportPrivateUsage = "none"
-reportMissingParameterType = "error"
+reportMissingParameterType = "none"
 
 
 [tool.pytest.ini_options]

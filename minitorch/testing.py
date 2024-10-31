@@ -6,7 +6,6 @@ import minitorch.operators as operators
 
 A = TypeVar("A")
 
-
 class MathTest(Generic[A]):
     @staticmethod
     def neg(a: A) -> A:

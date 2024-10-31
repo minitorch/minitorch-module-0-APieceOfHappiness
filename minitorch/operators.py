@@ -31,8 +31,71 @@ from typing import Callable, Iterable
 # For is_close:
 # $f(x) = |x - y| < 1e-2$
 
+def mul(x: float, y: float) -> float:
+    return x * y
 
-# TODO: Implement for Task 0.1.
+
+def id(x: float) -> float:
+    return x
+
+
+def add(x: float, y: float) -> float:
+    return x + y
+
+
+def neg(x: float) -> float:
+    return -x
+
+
+def lt(x: float, y: float) -> float:
+    return 1 if x < y else 0
+
+
+def eq(x: float, y: float) -> float:
+    return 1 if x == y else 0
+
+
+def max(x: float, y: float) -> float:
+    return x if x > y else y
+
+
+def is_close(x: float, y: float) -> float:
+    return abs(x - y) < 1e-2
+
+
+def sigmoid(x: float) -> float:
+    return 1 / (1 + math.exp(-x)) if x >= 0 else math.exp(x) / (1 + math.exp(x))
+
+
+def relu(x: float) -> float:
+    return (x > 0) * x
+
+EPS = 1e-6
+
+def log(x: float) -> float:
+    return math.log(x + EPS)
+
+
+def exp(x: float) -> float:
+    return math.exp(x)
+
+
+def log_back(x: float, d: float) -> float:
+    return d / (x + EPS)
+
+
+def inv(x: float) -> float:
+    return 1 / (x + EPS)
+    
+
+
+def inv_back(x: float, d: float) -> float:
+    return -d / (x * x)
+
+
+def relu_back(x: float, d: float) -> float:
+    return (x > 0) * d
+
 
 
 # ## Task 0.3
